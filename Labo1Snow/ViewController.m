@@ -16,14 +16,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    timercount = 0;
-    timerLabel.text = [NSString stringWithFormat:@"0"];
     // Do any additional setup after loading the view, typically from a nib.
-    // Here is an added comment for commit test.
     
-    double UserInfoArray[10];
+    
+    timercount = 0;
+    timerLabel.text = [NSString stringWithFormat:@"00:00.000"];
+    
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -34,15 +33,18 @@
     timercount = timercount + 1;
     timerLabel.text = [NSString stringWithFormat:@"%i", timercount];
 }
+
 -(IBAction)start:(id)sender {
     timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(count) userInfo:nil repeats:true];
 }
+
 -(IBAction)stop:(id)sender{
     [timer invalidate];
 }
+
 -(IBAction)restart:(id)sender{
     timercount = 0;
-    timerLabel.text = [NSString stringWithFormat:@"0"];
+    timerLabel.text = [NSString stringWithFormat:@"00:00.000"];
     [timer invalidate];
 }
 @end
