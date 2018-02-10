@@ -8,8 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+int timercount;
 
+@interface ViewController : UIViewController {
+    IBOutlet UILabel *timerLabel;
+    
+    NSTimer *timer;
+}
+
+-(void)count;
+-(IBAction)start:(id)sender;
+-(IBAction)stop:(id)sender;
+-(IBAction)restart:(id)sender;
 
 @end
 
