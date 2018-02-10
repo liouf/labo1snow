@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    // Here is an added comment for commit test.
     double UserInfoArray[10];
 }
 
