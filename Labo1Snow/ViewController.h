@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#include "NSMutableToQueue.h"
 
 int timercount;
 
 @interface ViewController : UIViewController {
     IBOutlet UILabel *timerLabel;
-    
+    NSDictionary *athlete;
+    NSMutableArray *participants;
     NSTimer *timer;
 }
 

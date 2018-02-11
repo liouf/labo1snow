@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "NSMutableToQueue.h"
 
 @interface ViewController ()
 
@@ -18,9 +19,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    participants = [[NSMutableArray alloc] init];
     timercount = 0;
     timerLabel.text = [NSString stringWithFormat:@"00:00.000"];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,9 +40,25 @@
     timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(count) userInfo:nil repeats:true];
 }
 
-//Method Stops the timer
+//Method stops the timer and adds a descent entry to the current athlete
 -(IBAction)stop:(id)sender{
-    [timer invalidate];
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Judge Athlete"
+                                                                              message: @"Add penalties, disqualify and/or confirm time."
+                                                                       preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) { //add additional alert controller objects to capture penalties
+        textField.placeholder = @"athlete";
+        textField.textColor = [UIColor blueColor];
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+    }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSArray * textfields = alertController.textFields;
+        UITextField * firstname = textfields[0];
+        UITextField * lastname = textfields[1];
+        UITextField * country = textfields[2];
+        NSLog(@"%@:%@:%@",firstname.text,lastname.text,country.text);
+    }]];
+    [self presentViewController:alertController animated:YES completion:nil];    [timer invalidate];
 }
 
 //Method restarts the timer
@@ -79,7 +96,8 @@
         UITextField * firstname = textfields[0];
         UITextField * lastname = textfields[1];
         UITextField * country = textfields[2];
-        NSLog(@"%@:%@:%@",firstname.text,lastname.text,country.text);
+        NSDictionary * athlete = @{@"firstname": firstname, @"lastname" : lastname, @"country" : country};
+        [participants addObject:athlete];
     }]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
