@@ -14,6 +14,7 @@ int timercount;
     IBOutlet UILabel *timerLabel;
     
     NSTimer *timer;
+    //Added comment from agu PC
 }
 
 -(void)count;
