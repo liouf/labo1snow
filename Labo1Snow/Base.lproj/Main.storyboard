@@ -100,6 +100,9 @@
                                 <rect key="frame" x="62" y="776" width="114" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Start New Comp"/>
+                                <connections>
+                                    <action selector="startNewRace:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vDu-GT-DAN"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Race Leaderboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Te-YA-gDk">
                                 <rect key="frame" x="478" y="36" width="140" height="21"/>

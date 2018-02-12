@@ -16,6 +16,7 @@ int timercount;
     NSDictionary *athlete;
     NSMutableArray *participants;
     NSTimer *timer;
+    NSDictionary *currentAthlete;
 }
 
 -(void)count;
@@ -23,6 +24,7 @@ int timercount;
 -(IBAction)stop:(id)sender;
 -(IBAction)restart:(id)sender;
 -(IBAction)captueAthlete:(id)sender;
+-(IBAction)startNewRace:(id)sender;
 
 @end
 
