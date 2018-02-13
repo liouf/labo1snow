@@ -19,7 +19,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    participants = [[NSMutableArray alloc] init];//init participants list
+    athletes = [[NSMutableArray alloc] init];
+    raceParticipants = [[NSMutableArray alloc] init];
+    leaderboard = [[NSMutableArray alloc] init];
+    nextParticipantIndex = 0; 
+    
     timercount = 0; // set timer
     timerLabel.text = [NSString stringWithFormat:@"0"];//put starting text
 }
@@ -118,11 +122,11 @@
         UITextField * sortingKey = textfields[3];
         
         //Add athlete to participant list
-        NSDictionary * athlete = @{@"firstname": firstname, @"lastname" : lastname, @"country" : country, @"sortingKey" : sortingKey};//Assuming unique sortingKeys
-        [participants addObject:athlete];
+        NSDictionary * athlete = @{@"firstname": firstname.text, @"lastname" : lastname.text, @"country" : country.text, @"sortingKey" : sortingKey.text};//Assuming unique sortingKeys
+        [athletes addObject:athlete];
         
         //Log all athletes
-        for (id obj in participants)
+        for (id obj in athletes)
             NSLog(@"obj: %@", obj);
     }]];
 
@@ -131,16 +135,33 @@
 
 //Method here starts a new race with the current particpiants
 -(IBAction)startNewRace:(id)sender{
-    if ([participants count] < 1) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"You need at least 1 participant!" preferredStyle:UIAlertControllerStyleAlert];
+    if ([athletes count] < 3) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"You need at least 3 participant!" preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             // Called when user taps outside
         }]];
         [self presentViewController:alert animated:YES completion:nil];
     } else {
         //Start new race competition
+
+        //Copy all athletes to list of participants
+        for (NSDictionary * obj in athletes) {
+            NSDictionary * participant = [NSDictionary dictionaryWithDictionary:obj];
+            [raceParticipants addObject:participant];
+        }
+
+        //Set Labels
+        NSDictionary *nextAthlete1 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex)]];
+        NSDictionary *nextAthlete2 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex+1)]];
+        NSDictionary *nextAthlete3 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex+2)]];
         
-        
+        NSMutableString *mutableString = [[NSMutableString alloc] init];
+        mutableString = nextAthlete1[@"firstname"];
+        athlete1.text = mutableString;
+        mutableString = nextAthlete2[@"firstname"];
+        athlete2.text = mutableString;
+        mutableString = nextAthlete3[@"firstname"];
+        athlete3.text = mutableString;
     }
 }
 
