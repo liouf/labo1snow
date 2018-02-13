@@ -22,7 +22,7 @@
     athletes = [[NSMutableArray alloc] init];
     raceParticipants = [[NSMutableArray alloc] init];
     leaderboard = [[NSMutableArray alloc] init];
-    nextParticipantIndex = 0; 
+    nextParticipantIndex = -1;
     
     timercount = 0; // set timer
     timerLabel.text = [NSString stringWithFormat:@"0"];//put starting text
@@ -124,10 +124,6 @@
         //Add athlete to participant list
         NSDictionary * athlete = @{@"firstname": firstname.text, @"lastname" : lastname.text, @"country" : country.text, @"sortingKey" : sortingKey.text};//Assuming unique sortingKeys
         [athletes addObject:athlete];
-        
-        //Log all athletes
-        for (id obj in athletes)
-            NSLog(@"obj: %@", obj);
     }]];
 
     [self presentViewController:alertController animated:YES completion:nil];
@@ -135,6 +131,7 @@
 
 //Method here starts a new race with the current particpiants
 -(IBAction)startNewRace:(id)sender{
+    nextParticipantIndex = -1;
     if ([athletes count] < 3) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"You need at least 3 participant!" preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
@@ -149,20 +146,27 @@
             NSDictionary * participant = [NSDictionary dictionaryWithDictionary:obj];
             [raceParticipants addObject:participant];
         }
-
-        //Set Labels
-        NSDictionary *nextAthlete1 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex)]];
-        NSDictionary *nextAthlete2 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex+1)]];
-        NSDictionary *nextAthlete3 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex+2)]];
-        
-        NSMutableString *mutableString = [[NSMutableString alloc] init];
-        mutableString = nextAthlete1[@"firstname"];
-        athlete1.text = mutableString;
-        mutableString = nextAthlete2[@"firstname"];
-        athlete2.text = mutableString;
-        mutableString = nextAthlete3[@"firstname"];
-        athlete3.text = mutableString;
+        [self updateStanding];
     }
+}
+
+//Method will update the view with appropriate information.
+-(void)updateStanding {
+    nextParticipantIndex = nextParticipantIndex + 1;
+    
+    //Set Labels
+    NSDictionary *nextAthlete1 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex)]];
+    NSDictionary *nextAthlete2 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex+1)]];
+    NSDictionary *nextAthlete3 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(nextParticipantIndex+2)]];
+    
+    NSMutableString *mutableString = [[NSMutableString alloc] init];
+    mutableString = nextAthlete1[@"firstname"];
+    athlete1.text = mutableString;
+    mutableString = nextAthlete2[@"firstname"];
+    athlete2.text = mutableString;
+    mutableString = nextAthlete3[@"firstname"];
+    athlete3.text = mutableString;
+    
 }
 
 @end

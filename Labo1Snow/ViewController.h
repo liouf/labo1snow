@@ -37,6 +37,7 @@
 -(IBAction)restart:(id)sender;
 -(IBAction)captueAthlete:(id)sender;
 -(IBAction)startNewRace:(id)sender;
+-(void)updateStandings;
 
 @end
 
