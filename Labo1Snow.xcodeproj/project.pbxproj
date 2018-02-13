@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		276F07F62030C737001F6878 /* NSMutableToQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 276F07F52030C737001F6878 /* NSMutableToQueue.m */; };
 		E77812B820228DA300A9B9BC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E77812B720228DA300A9B9BC /* AppDelegate.m */; };
 		E77812BB20228DA300A9B9BC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E77812BA20228DA300A9B9BC /* ViewController.m */; };
 		E77812BE20228DA300A9B9BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E77812BC20228DA300A9B9BC /* Main.storyboard */; };
@@ -16,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		276F07F42030C711001F6878 /* NSMutableToQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSMutableToQueue.h; sourceTree = "<group>"; };
+		276F07F52030C737001F6878 /* NSMutableToQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSMutableToQueue.m; sourceTree = "<group>"; };
 		E77812B320228DA300A9B9BC /* Labo1Snow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Labo1Snow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E77812B620228DA300A9B9BC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E77812B720228DA300A9B9BC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -67,6 +70,8 @@
 				E77812C120228DA300A9B9BC /* LaunchScreen.storyboard */,
 				E77812C420228DA300A9B9BC /* Info.plist */,
 				E77812C520228DA300A9B9BC /* main.m */,
+				276F07F42030C711001F6878 /* NSMutableToQueue.h */,
+				276F07F52030C737001F6878 /* NSMutableToQueue.m */,
 			);
 			path = Labo1Snow;
 			sourceTree = "<group>";
@@ -142,6 +147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				276F07F62030C737001F6878 /* NSMutableToQueue.m in Sources */,
 				E77812BB20228DA300A9B9BC /* ViewController.m in Sources */,
 				E77812C620228DA300A9B9BC /* main.m in Sources */,
 				E77812B820228DA300A9B9BC /* AppDelegate.m in Sources */,
