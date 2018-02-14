@@ -205,6 +205,9 @@
         [athletesLabel sizeToFit];
         
     }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        // Called when user taps outside
+    }]];
 
     [self presentViewController:alertController animated:YES completion:nil];
 }
