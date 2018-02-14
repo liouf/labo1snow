@@ -13,17 +13,21 @@
 
 @interface ViewController : UIViewController {
 
+    IBOutlet UILabel *currentAthleteNameLabel;//current athlete label
+    IBOutlet UILabel *currentAthleteCountryLabel;//current athlete label
     IBOutlet UILabel *athlete1;//label next to go
     IBOutlet UILabel *athlete2;//label second to go
     IBOutlet UILabel *athlete3;//label third to go
     
+    IBOutlet UIButton *startbtn;//start button
+    IBOutlet UIButton *stopbtn;//start button
     
-    
-    NSDictionary *athlete; //key/pair value of an individual athlete
+    NSMutableDictionary *currentathlete;
+
     NSMutableArray *athletes; //list of all athletes to be part of a race
     NSMutableArray *leaderboard;//current leaderboard of the race
     NSMutableArray *raceParticipants;//participants of the race
-    int nextParticipantIndex;//keep track of participant
+    int currentParticipantIndex;//keep track of participant
     
     IBOutlet UILabel *timerLabel;//timer label
     int timercount;

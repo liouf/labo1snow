@@ -149,6 +149,10 @@
                         <outlet property="athlete1" destination="x3H-Ky-CPn" id="wfj-az-6EZ"/>
                         <outlet property="athlete2" destination="Wt7-lr-nU7" id="T6U-KR-xgg"/>
                         <outlet property="athlete3" destination="lP2-gR-aCU" id="Yfl-uH-dpf"/>
+                        <outlet property="currentAthleteCountryLabel" destination="8uk-Z1-wdd" id="ksz-w2-rkh"/>
+                        <outlet property="currentAthleteNameLabel" destination="qoa-T7-pbr" id="Tck-N4-l7x"/>
+                        <outlet property="startbtn" destination="abE-WI-iYN" id="fVl-Qt-WMa"/>
+                        <outlet property="stopbtn" destination="Yk2-vu-z8N" id="vl4-Kk-A3f"/>
                         <outlet property="timerLabel" destination="qjM-Kj-NJe" id="wQv-EG-Gij"/>
                     </connections>
                 </viewController>
