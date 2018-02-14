@@ -129,9 +129,9 @@
     
     for (NSMutableDictionary * obj in leaderboard) {
         if ([obj[@"time"] intValue] == 999) {
-            [leaderboardString appendFormat:@"Name: %@, %@: %@\n", obj[@"lastname"], obj[@"firstname"], @"DNF"];
+            [leaderboardString appendFormat:@"Name: %@, %@: %@\n_____________\n", obj[@"lastname"], obj[@"firstname"], @"DNF"];
              } else {
-                  [leaderboardString appendFormat:@"Name: %@, %@: %@\n", obj[@"lastname"], obj[@"firstname"], obj[@"time"]];
+                  [leaderboardString appendFormat:@"Name: %@, %@: %@ secs\n_____________\n", obj[@"lastname"], obj[@"firstname"], obj[@"time"]];
              }
     }
     leaderboardLabel.text = leaderboardString;
@@ -198,10 +198,11 @@
         NSMutableString * athletesString = [[NSMutableString alloc] init];
         
         for (NSMutableDictionary * obj in athletes) {
-            [athletesString appendFormat:@"Name: %@, %@: %@\nFrom: %@\n", obj[@"lastname"], obj[@"firstname"], obj[@"sortingKey"], obj[@"country"]];
+            [athletesString appendFormat:@"Name: %@, %@: %@\nFrom: %@\n_____________\n", obj[@"lastname"], obj[@"firstname"], obj[@"sortingKey"], obj[@"country"]];
         }
         
         athletesLabel.text = athletesString;
+        [athletesLabel sizeToFit];
         
     }]];
 
@@ -211,8 +212,8 @@
 //Method here starts a new race with the current particpiants
 -(IBAction)startNewRace:(id)sender{
     currentParticipantIndex = -1;
-    [self toggleButton:startbtn];
-    [self toggleButton:enterAthlete];//disallow athletes to enter
+    raceStatus.text = [NSString stringWithFormat:@"1/2"];
+    raceNumber = 1;
     
     if ([athletes count] < 1) {
         UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"You need at least 1 participant!" preferredStyle:UIAlertControllerStyleAlert];
@@ -221,8 +222,12 @@
         }]];
         [self presentViewController:alert animated:YES completion:nil];
     } else {
+        startbtn.enabled = YES;
+        enterAthlete.enabled = NO;//disallow athletes to enter
         //Start new race competition
         [raceParticipants removeAllObjects];
+        [leaderboard removeAllObjects];
+        leaderboardLabel.text = nil;
         
         //Copy all athletes to list of participants
         for (NSMutableDictionary * obj in athletes) {
@@ -261,9 +266,12 @@
                 }
             } else {
                 athlete2.text = nil;
+                athlete3.text = nil;
             }
         } else {
             athlete1.text = nil;
+            athlete2.text = nil;
+            athlete3.text = nil;
         }
     } else if (raceNumber == 1) {
         raceNumber = 2;
@@ -281,6 +289,21 @@
         [self updateStandings];
     } else if (raceNumber == 2) {
         //Show the winners and reset?
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Race Completed!"
+                                                                                  message: @"Please see the leaderboard for final standings."
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+ 
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            // Called when user taps outside
+        }]];
+        athlete1.text = nil;
+        athlete2.text = nil;
+        athlete3.text = nil;
+        currentAthleteCountryLabel.text = nil;
+        currentAthleteNameLabel.text = nil;
+        [self toggleButton:enterAthlete];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
     }
 }
 
