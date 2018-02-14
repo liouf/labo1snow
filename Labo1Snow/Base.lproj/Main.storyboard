@@ -76,7 +76,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Race Leaderboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Te-YA-gDk">
-                                <rect key="frame" x="478" y="36" width="140" height="21"/>
+                                <rect key="frame" x="478" y="36" width="140" height="743"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -151,6 +151,7 @@
                         <outlet property="athlete3" destination="lP2-gR-aCU" id="Yfl-uH-dpf"/>
                         <outlet property="currentAthleteCountryLabel" destination="8uk-Z1-wdd" id="ksz-w2-rkh"/>
                         <outlet property="currentAthleteNameLabel" destination="qoa-T7-pbr" id="Tck-N4-l7x"/>
+                        <outlet property="leaderboardLabel" destination="0Te-YA-gDk" id="5Qe-X6-G90"/>
                         <outlet property="startbtn" destination="abE-WI-iYN" id="fVl-Qt-WMa"/>
                         <outlet property="stopbtn" destination="Yk2-vu-z8N" id="vl4-Kk-A3f"/>
                         <outlet property="timerLabel" destination="qjM-Kj-NJe" id="wQv-EG-Gij"/>

@@ -98,6 +98,12 @@
 -(void)addTimeAndUpdateLeaderboard:(int)athleteTime {
     [currentathlete setObject:[NSNumber numberWithInt:athleteTime] forKey:@"time"];
     [leaderboard addObject:[NSMutableDictionary dictionaryWithDictionary:currentathlete]];
+    NSMutableString * leaderboardString = [[NSMutableString alloc] init];
+    
+    for (NSMutableDictionary * obj in leaderboard) {
+        [leaderboardString appendFormat:@"%@ : %@, ", obj[@"firstname"], obj[@"time"]];
+    }
+    leaderboardLabel.text = leaderboardString;
 }
 
 //Method restarts the timer
