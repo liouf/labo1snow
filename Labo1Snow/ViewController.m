@@ -25,8 +25,11 @@
     currentParticipantIndex = -1;
     
     timercount = 0; // set timer
-    timerLabel.text = [NSString stringWithFormat:@"0"];//put starting text
-    [self toggleStartButton:stopbtn];
+    raceNumber = 1;// indicates which race to perform
+    timerLabel.text = [NSString stringWithFormat:@"0"];// put starting text
+    
+    [self toggleButton:stopbtn];
+    [self toggleButton:startbtn];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,12 +48,12 @@
 -(IBAction)start:(id)sender {
     timercount = 0;
     timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(count) userInfo:nil repeats:true];
-    [self toggleStartButton:startbtn];
-    [self toggleStartButton:stopbtn];
+    [self toggleButton:startbtn];
+    [self toggleButton:stopbtn];
 }
 
 //Toggle Start Button on or off
--(void)toggleStartButton:(UIButton*)button {
+-(void)toggleButton:(UIButton*)button {
     if (button.enabled == YES) {
         button.enabled = NO;
     } else {
@@ -61,7 +64,6 @@
 //Method stops the timer and adds a descent entry with the current athlete
 -(IBAction)stop:(id)sender{
     [timer invalidate];
-    
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Judge Athlete"
                                                                               message: @"Add penalties, disqualify and/or confirm time."
                                                                        preferredStyle:UIAlertControllerStyleAlert];
@@ -90,20 +92,40 @@
     }]];
     
     [self presentViewController:alertController animated:YES completion:nil];
-    [self toggleStartButton:startbtn];
-    [self toggleStartButton:stopbtn];
+    [self toggleButton:startbtn];
+    [self toggleButton:stopbtn];
 }
 
 //Add current athlete to the leaderboard
 -(void)addTimeAndUpdateLeaderboard:(int)athleteTime {
     [currentathlete setObject:[NSNumber numberWithInt:athleteTime] forKey:@"time"];
-    [leaderboard addObject:[NSMutableDictionary dictionaryWithDictionary:currentathlete]];
+    
+    int foundIndex = -1;
+    
+    for (NSMutableDictionary * obj in leaderboard) {
+        if ([obj[@"sortingKey"] isEqualToString:currentathlete[@"sortingKey"]]) {
+            foundIndex = [leaderboard indexOfObject:obj];
+        }
+    }
+    
+    if (foundIndex != -1) {
+        int leaderboardTime = [[[leaderboard objectAtIndex:foundIndex] valueForKey:@"time"] intValue];
+        leaderboardTime = leaderboardTime + athleteTime;
+        [[leaderboard objectAtIndex:foundIndex] setValue:[NSNumber numberWithInt:leaderboardTime] forKey:@"time"];
+    } else {
+        [leaderboard addObject:[NSMutableDictionary dictionaryWithDictionary:currentathlete]];
+    }
+    
+    NSSortDescriptor * descriptor = [[NSSortDescriptor alloc] initWithKey:@"time" ascending:YES];
+    [leaderboard sortUsingDescriptors:@[descriptor]];
     NSMutableString * leaderboardString = [[NSMutableString alloc] init];
     
     for (NSMutableDictionary * obj in leaderboard) {
-        [leaderboardString appendFormat:@"%@ : %@, ", obj[@"firstname"], obj[@"time"]];
+        [leaderboardString appendFormat:@"Name: %@, %@: %@\n", obj[@"lastname"], obj[@"firstname"], obj[@"time"]];
     }
+    
     leaderboardLabel.text = leaderboardString;
+    [leaderboardLabel sizeToFit];
 }
 
 //Method restarts the timer
@@ -114,7 +136,7 @@
 }
 
 //Method here captures the athlete information from a popup window.
--(IBAction)captueAthlete:(id)sender{
+-(IBAction)captureAthlete:(id)sender{
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Enter New Athlete"
                                                                               message: @"First name, Last Name and Country"
                                                                        preferredStyle:UIAlertControllerStyleAlert];
@@ -163,6 +185,14 @@
         
         //Assuming unique sortingKeys
         [athletes addObject:athlete];
+        NSMutableString * athletesString = [[NSMutableString alloc] init];
+        
+        for (NSMutableDictionary * obj in athletes) {
+            [athletesString appendFormat:@"Name: %@, %@: %@\n", obj[@"lastname"], obj[@"firstname"], obj[@"time"]];
+        }
+        
+        athletesLabel.text = athletesString;
+        
     }]];
 
     [self presentViewController:alertController animated:YES completion:nil];
@@ -171,14 +201,16 @@
 //Method here starts a new race with the current particpiants
 -(IBAction)startNewRace:(id)sender{
     currentParticipantIndex = -1;
-    if ([athletes count] < 4) {
-        UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"You need at least 4 participant!" preferredStyle:UIAlertControllerStyleAlert];
+    [self toggleButton:startbtn];
+    [self toggleButton:enterAthlete];//disallow athletes to enter
+    
+    if ([athletes count] < 1) {
+        UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"Error" message:@"You need at least 1 participant!" preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             // Called when user taps outside
         }]];
         [self presentViewController:alert animated:YES completion:nil];
     } else {
-        
         //Start new race competition
         //Copy all athletes to list of participants
         for (NSMutableDictionary * obj in athletes) {
@@ -194,13 +226,15 @@
 
 //Method will update the view with appropriate information.
 -(void)updateStandings {
-    
     currentParticipantIndex = currentParticipantIndex + 1;
     int participantSize = [raceParticipants count];
     
     if(participantSize > currentParticipantIndex) {
+        
         currentathlete = [raceParticipants objectAtIndex:currentParticipantIndex];
-        currentAthleteNameLabel.text = [NSString stringWithFormat:@"%@", currentathlete[@"firstname"]];
+        currentAthleteNameLabel.text = [NSString stringWithFormat:@"%@, %@", currentathlete[@"lastname"], currentathlete[@"firstname"]];
+        currentAthleteCountryLabel.text = [NSString stringWithFormat:@"%@", currentathlete[@"country"]];
+        
         if(participantSize > currentParticipantIndex+1) {
             NSDictionary * nextAthlete1 = [NSDictionary dictionaryWithDictionary:[raceParticipants objectAtIndex:(currentParticipantIndex+1)]];
             athlete1.text = [NSString stringWithFormat:@"%@", nextAthlete1[@"firstname"]];
@@ -219,8 +253,22 @@
         } else {
             athlete1.text = nil;
         }
-    } else {
-        //End Race 1 here, update for race 2?
+    } else if (raceNumber == 1) {
+        raceNumber = 2;
+        [raceParticipants removeAllObjects];
+        
+        //Add the people again
+        for (NSMutableDictionary * obj in athletes) {
+            NSMutableDictionary * participant = [NSMutableDictionary dictionaryWithDictionary:obj];
+            [raceParticipants addObject:participant];
+        }
+        
+        raceStatus.text = [NSString stringWithFormat:@"2/2"];
+        currentParticipantIndex = -1;
+        
+        [self updateStandings];
+    } else if (raceNumber == 2) {
+        //Show the winners and reset?
     }
 }
 

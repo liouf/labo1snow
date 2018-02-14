@@ -19,9 +19,12 @@
     IBOutlet UILabel * athlete2;//label second to go
     IBOutlet UILabel * athlete3;//label third to go
     IBOutlet UILabel * leaderboardLabel;
+    IBOutlet UILabel * athletesLabel;
+    IBOutlet UILabel * raceStatus;
     
     IBOutlet UIButton * startbtn;//start button
     IBOutlet UIButton * stopbtn;//start button
+    IBOutlet UIButton * enterAthlete;
     
     NSMutableDictionary * currentathlete;
 
@@ -32,15 +35,15 @@
     
     IBOutlet UILabel * timerLabel;//timer label
     int timercount;
+    int raceNumber;
     NSTimer * timer;
-    
 }
 
 -(void)count;
 -(IBAction)start:(id)sender;
 -(IBAction)stop:(id)sender;
 -(IBAction)restart:(id)sender;
--(IBAction)captueAthlete:(id)sender;
+-(IBAction)captureAthlete:(id)sender;
 -(IBAction)startNewRace:(id)sender;
 -(void)updateStandings;
 
