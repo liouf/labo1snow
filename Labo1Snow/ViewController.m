@@ -74,6 +74,9 @@
         textField.borderStyle = UITextBorderStyleRoundedRect;
     }];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Mark DNF" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self addTimeAndUpdateLeaderboard:999];
+        [self updateStandings];
+        timerLabel.text = [NSString stringWithFormat:@"0"];
         NSLog(@"You failed! Adding at the bottom of the list in DNF");// mark as DNF
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Submit Time" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -82,6 +85,9 @@
         UITextField * penalties = textfields[0];
         int penaltiesFixed = [[NSString stringWithFormat:@"%@", penalties.text] integerValue]; // converting the penalties
         if (penaltiesFixed >= 3) {
+            [self addTimeAndUpdateLeaderboard:999];
+            [self updateStandings];
+            timerLabel.text = [NSString stringWithFormat:@"0"];
             NSLog(@"You failed! Adding at the bottom of the list in DNF");// mark as DNF
         } else {
             athleteTime = timercount + (penaltiesFixed * 30);// increase penalty amount
@@ -110,8 +116,9 @@
     
     if (foundIndex != -1) {
         int leaderboardTime = [[[leaderboard objectAtIndex:foundIndex] valueForKey:@"time"] intValue];
-        leaderboardTime = leaderboardTime + athleteTime;
-        [[leaderboard objectAtIndex:foundIndex] setValue:[NSNumber numberWithInt:leaderboardTime] forKey:@"time"];
+        if (athleteTime < leaderboardTime) {
+             [[leaderboard objectAtIndex:foundIndex] setValue:[NSNumber numberWithInt:athleteTime] forKey:@"time"];
+        }
     } else {
         [leaderboard addObject:[NSMutableDictionary dictionaryWithDictionary:currentathlete]];
     }
@@ -121,9 +128,12 @@
     NSMutableString * leaderboardString = [[NSMutableString alloc] init];
     
     for (NSMutableDictionary * obj in leaderboard) {
-        [leaderboardString appendFormat:@"Name: %@, %@: %@\n", obj[@"lastname"], obj[@"firstname"], obj[@"time"]];
+        if ([obj[@"time"] intValue] == 999) {
+            [leaderboardString appendFormat:@"Name: %@, %@: %@\n", obj[@"lastname"], obj[@"firstname"], @"DNF"];
+             } else {
+                  [leaderboardString appendFormat:@"Name: %@, %@: %@\n", obj[@"lastname"], obj[@"firstname"], obj[@"time"]];
+             }
     }
-    
     leaderboardLabel.text = leaderboardString;
     [leaderboardLabel sizeToFit];
 }
@@ -188,7 +198,7 @@
         NSMutableString * athletesString = [[NSMutableString alloc] init];
         
         for (NSMutableDictionary * obj in athletes) {
-            [athletesString appendFormat:@"Name: %@, %@: %@\n", obj[@"lastname"], obj[@"firstname"], obj[@"time"]];
+            [athletesString appendFormat:@"Name: %@, %@: %@\nFrom: %@\n", obj[@"lastname"], obj[@"firstname"], obj[@"sortingKey"], obj[@"country"]];
         }
         
         athletesLabel.text = athletesString;
@@ -212,6 +222,8 @@
         [self presentViewController:alert animated:YES completion:nil];
     } else {
         //Start new race competition
+        [raceParticipants removeAllObjects];
+        
         //Copy all athletes to list of participants
         for (NSMutableDictionary * obj in athletes) {
             NSMutableDictionary * participant = [NSMutableDictionary dictionaryWithDictionary:obj];
